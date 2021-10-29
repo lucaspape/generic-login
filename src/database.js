@@ -114,7 +114,7 @@ module.exports = {
         insert_user_query += ', ' + field;
       });
 
-      insert_user_query + = ') values (' + mysqlConnection.escape(userId) + ', ' + mysqlConnection.escape(user.username) + ', ' + mysqlConnection.escape(user.password)
+      insert_user_query += ') values (' + mysqlConnection.escape(userId) + ', ' + mysqlConnection.escape(user.username) + ', ' + mysqlConnection.escape(user.password)
 
       REQUIRED_FIELDS.forEach((field, i) => {
         insert_user_query += ', ' + mysqlConnection.escape(user[field]);
