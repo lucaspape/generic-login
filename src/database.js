@@ -43,16 +43,52 @@ function createTables(callback){
   });
 }
 
-function getUser(sessionId, callback){
-  const GET_USER_QUERY = 'select id,username,personId,email,firstName,lastName from `' + DBNAME + '`.`users` where id = ' + mysqlConnection.escape(sessionId) + ';';
+function getSession(sessionId, callback){
+  const GET_SESSION_QUERY = 'select id,userId from `' + DBNAME + '`.`sessions` where id = ' + mysqlConnection.escape(sessionId) + ';';
 
-  mysqlConnection.query(GET_USER_QUERY, (err, result) => {
+  mysqlConnection.query(GET_SESSION_QUERY, (err, result) => {
     if(err){
       callback(err);
     }else{
       callback(undefined, result[0]);
     }
   });
+}
+
+function getUser(userId, withPassword, callback){
+  let get_user_query = 'select id, username';
+
+  if(withPassword){
+    get_user_query += ', password';
+  }
+
+  REQUIRED_FIELDS.forEach((field, i) => {
+    get_user_query += ', ' + field;
+  });
+
+  get_user_query += ' from `' + DBNAME + '`.`users` where id = ' + mysqlConnection.escape(userId) + ';';
+
+  mysqlConnection.query(get_user_query, (err, result) => {
+    if(err){
+      callback(err);
+    }else{
+      callback(undefined, result[0]);
+    }
+  });
+}
+
+checkUserObject(user){
+  if(!user.username){
+    return "No username";
+  }else if(!user.password){
+    return "No password";
+  }else{
+    REQUIRED_FIELDS.forEach((field, i) => {
+      if(!user[field]){
+        return "No " + field;
+      }
+    });
+  }
 }
 
 module.exports = {
@@ -66,26 +102,73 @@ module.exports = {
     });
   },
 
-  register: function(username, password, personId, email, firstName, lastName, callback){
-    const sessionId = uuidv4().replaceAll('-', '');
+  register: function(user, callback){
+    const userId = uuidv4().replaceAll('-', '');
 
-    const INSERT_USER_QUERY = 'insert into `' + DBNAME + '`.`users` (id, username, email, firstName, lastName) values (' + mysqlConnection.escape(sessionId) + ', ' + mysqlConnection.escape(username) + ', ' + mysqlConnection.escape(personId) + ', ' + mysqlConnection.escape(email) + ', ' + mysqlConnection.escape(firstName) + ', ' + mysqlConnection.escape(lastName) + ');';
+    const error = checkUserObject(user);
 
-    mysqlConnection.query(INSERT_USER_QUERY, (err, result) => {
+    if(!error){
+      let insert_user_query = 'insert into `' + DBNAME + '`.`users` (id, username, password';
+
+      REQUIRED_FIELDS.forEach((field, i) => {
+        insert_user_query += ', ' + field;
+      });
+
+      insert_user_query + = ') values (' + mysqlConnection.escape(userId) + ', ' + mysqlConnection.escape(user.username) + ', ' + mysqlConnection.escape(user.password)
+
+      REQUIRED_FIELDS.forEach((field, i) => {
+        insert_user_query += ', ' + mysqlConnection.escape(user[field]);
+      });
+
+      insert_user_query += ');';
+
+      console.log('Inserting user: ' + insert_user_query);
+
+      mysqlConnection.query(insert_user_query, (err, result) => {
+        if(err){
+          callback(err);
+        }else{
+          callback(undefined);
+        }
+      });
+
+    }else{
+      callback(error);
+    }
+  },
+
+  login: function(username, password, callback){
+    const GET_USER_QUERY = 'select id, username, password from `' + DBNAME + '`.`users` where username = ' mysqlConnection.escape(username);
+
+    mysqlConnection.query(GET_USER_QUERY, (err, result) => {
       if(err){
         callback(err);
       }else{
-        callback(undefined, { "sessionId": sessionId });
+        if(result[0]){
+          if(result[0].password === password){
+            const sessionId = uuidv4().replaceAll('-', '');
+
+            const INSERT_SESSION_QUERY = 'insert into `' + DBNAME + '`.`sessions` (id, userId) values (' + mysqlConnection.escape(sessionId) + ', ' + mysqlConnection.escape(result[0].id) + ');';
+
+            mysqlConnection.query(INSERT_SESSION_QUERY, (err, result) => {
+              if(err){
+                callback(err);
+              }else{
+                callback(undefined, { sessionId: sessionId });
+              }
+            });
+          }else{
+            callback(401);
+          }
+        }else{
+          callback(401);
+        }
       }
     });
   },
 
-  login: function(user, callback){
-
-  },
-
   checkLogin: function(sessionId, callback){
-    getUser(sessionId, (err, result) => {
+    getSession(sessionId, (err, result) => {
       if(err){
         callback(err);
       }else{
@@ -100,12 +183,22 @@ module.exports = {
   },
 
   getUserDetails: function(sessionId, callback){
-    getUser(sessionId, (err, result) => {
+    getSession(sessionId, (err, result) => {
       if(err){
         callback(err);
       }else{
         if(result){
-          callback(undefined, result);
+          getUser(result.userId, (err, result) => {
+            if(err){
+              callback(err);
+            }else{
+              if(result){
+                callback(undefined, result);
+              }else{
+                callback(401);
+              }
+            }
+          });
         }else{
           callback(401);
         }
