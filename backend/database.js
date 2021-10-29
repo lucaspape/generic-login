@@ -15,7 +15,7 @@ const CONFIG = require('./config.json');
 function createTables(callback){
   let create_user_table_query = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT, password TEXT';
 
-  CONFIG['required_fields'].forEach((field) => {
+  CONFIG.required_fields.forEach((field) => {
     create_user_table_query += ', ' + field.name + ' ' + field.type;
   });
 
@@ -59,7 +59,7 @@ function getUser(userId, withPassword, callback){
     get_user_query += ', password';
   }
 
-  CONFIG['required_fields'].forEach((field) => {
+  CONFIG.required_fields.forEach((field) => {
     get_user_query += ', ' + field.name;
   });
 
@@ -82,7 +82,7 @@ function checkUserObject(user){
   }else if(!user.password){
     return "No password";
   }else{
-    CONFIG['required_fields'].forEach((field) => {
+    CONFIG.required_fields.forEach((field) => {
       if(!user[field.name]){
         return "No " + field.name;
       }
@@ -115,7 +115,7 @@ module.exports = {
       }
     ];
 
-    returnArray.push(...CONFIG['required_fields']);
+    returnArray.push(...CONFIG.required_fields);
 
     return(returnArray);
   },
@@ -128,13 +128,13 @@ module.exports = {
     if(!error){
       let insert_user_query = 'insert into `' + DBNAME + '`.`users` (id, username, password';
 
-      CONFIG['required_fields'].forEach((field) => {
+      CONFIG.required_fields.forEach((field) => {
         insert_user_query += ', ' + field.name;
       });
 
       insert_user_query += ') values (' + mysqlConnection.escape(userId) + ', ' + mysqlConnection.escape(user.username) + ', ' + mysqlConnection.escape(user.password)
 
-      CONFIG['required_fields'].forEach((field) => {
+      CONFIG.required_fields.forEach((field) => {
         insert_user_query += ', ' + mysqlConnection.escape(user[field.name]);
       });
 
