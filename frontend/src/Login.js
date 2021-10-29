@@ -27,7 +27,7 @@ class Login extends React.Component {
   handleSubmit(event){
     event.preventDefault();
 
-    axios.post('api/login', { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
+    axios.post('api/login?origin=' + this.props.match.params.origin, { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
       console.log(response.data);
     });
   }
