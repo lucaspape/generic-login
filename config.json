@@ -3,17 +3,17 @@
       {
         "name": "email",
         "display_name": "Email",
-        "type": "TEXT"
+        "type": "text"
       },
       {
         "name" : "firstName",
         "display_name": "First Name",
-        "type": "TEXT"
+        "type": "text"
       },
       {
         "name": "lastName",
         "display_name": "Last Name",
-        "type": "TEXT"
+        "type": "text"
       }
   ]
 }

@@ -106,12 +106,12 @@ module.exports = {
       {
         name: 'username',
         display_name: 'Username',
-        type: 'TEXT'
+        type: 'text'
       },
       {
         name: 'password',
         display_name: 'Password',
-        type: 'PASSWORD'
+        type: 'password'
       }
     ];
 
