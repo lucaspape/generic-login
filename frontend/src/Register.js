@@ -4,7 +4,7 @@ import TextInput from './TextInput.js';
 
 const axios = require('axios');
 
-class Login extends React.Component {
+class Register extends React.Component {
   state = {
     input_fields: [],
     values: {}
@@ -63,4 +63,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Register;
