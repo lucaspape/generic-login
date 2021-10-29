@@ -6,7 +6,7 @@
         "type": "TEXT"
       },
       {
-        "name:" : "firstName",
+        "name" : "firstName",
         "display_name": "First Name",
         "type": "TEXT"
       },
