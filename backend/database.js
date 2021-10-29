@@ -65,6 +65,8 @@ function getUser(userId, withPassword, callback){
 
   get_user_query += ' from `' + DBNAME + '`.`users` where id = ' + mysqlConnection.escape(userId) + ';';
 
+  console.log(get_user_query);
+
   mysqlConnection.query(get_user_query, (err, result) => {
     if(err){
       callback(err);
