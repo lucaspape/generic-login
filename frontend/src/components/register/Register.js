@@ -1,6 +1,8 @@
+import './Register.css';
+
 import React from 'react';
 
-import TextInput from './TextInput.js';
+import TextInput from '../TextInput/TextInput.js';
 
 const axios = require('axios');
 
@@ -52,11 +54,14 @@ class Register extends React.Component {
     }
 
     return(
-      <div>
+      <div className='register'>
         <form onSubmit={this.handleSubmit}>
-           {this.state.input_fields}
 
-           <input type="submit" value="Register"/>
+          <div className='container'>
+            {this.state.input_fields}
+
+            <button type="submit">Register</button>
+          </div>
         </form>
       </div>
     );

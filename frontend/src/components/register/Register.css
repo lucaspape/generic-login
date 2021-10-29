@@ -1,4 +1,4 @@
-.login {
+.register {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,9 +26,4 @@ button:hover {
 
 .container {
   padding: 16px;
-}
-
-span.create {
-  float: right;
-  padding-top: 16px;
 }

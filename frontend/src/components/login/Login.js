@@ -1,28 +1,21 @@
 import './Login.css';
 import React from 'react'
+import TextInput from '../TextInput/TextInput.js';
 
 const axios = require('axios');
 
 class Login extends React.Component {
   state = {
-    username: '',
-    password: ''
+    input_fields: [],
+    values: {}
   }
 
   constructor(){
     super();
 
-    this.handleUsernameInputChange = this.handleUsernameInputChange.bind(this);
-    this.handlePasswordInputChange = this.handlePasswordInputChange.bind(this);
+    this.loaded = false;
+
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleUsernameInputChange(event){
-    this.setState({ username: event.target.value });
-  }
-
-  handlePasswordInputChange(event){
-    this.setState({ password: event.target.value });
   }
 
   handleSubmit(event){
@@ -31,7 +24,7 @@ class Login extends React.Component {
     const origin = new URLSearchParams(this.props.location.search).get('origin');
 
     if(origin){
-      axios.post('api/login?origin=' + origin, { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
+      axios.post('api/login?origin=' + origin, this.state.values, { validateStatus: false }).then(response => {
         if(response.data.redirect){
           window.location.href = response.data.redirect;
         }
@@ -41,21 +34,38 @@ class Login extends React.Component {
     }
   }
 
+  onTextFieldChange(name, value){
+    let values = this.state.values;
+    values[name] = value;
+
+    this.setState({ values: values });
+  }
+
   render(){
+    if(!this.loaded){
+      this.loaded = true;
+
+      let input_fields = [];
+
+      input_fields.push(<TextInput name='username' display_name='Username' type='text' onChange={this.onTextFieldChange}/>);
+      input_fields.push(<TextInput name='password' display_name='Password' type='password' onChange={this.onTextFieldChange}/>);
+
+      this.setState({ input_fields: input_fields });
+    }
+
     return(
-      <div>
+      <div className='login'>
         <form onSubmit={this.handleSubmit}>
-          <label>
-            Username:
-            <input type="text" value={this.state.username} onChange={this.handleUsernameInputChange}/>
-          </label>
 
-          <label>
-            Password:
-            <input type="password" value={this.state.password} onChange={this.handlePasswordInputChange}/>
-          </label>
+          <div className='container'>
+            {this.state.input_fields}
 
-          <input type="submit" value="Login"/>
+            <button type="submit">Login</button>
+          </div>
+
+          <div>
+            <span className='crate'>No account? Register <a href='/register'>here</a></span>
+          </div>
         </form>
       </div>
     );
