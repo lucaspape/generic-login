@@ -31,7 +31,9 @@ class Login extends React.Component {
 
     if(origin){
       axios.post('api/login?origin=' + origin, { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
-        console.log(response.data);
+        if(response.data.redirect){
+          window.href = response.data.redirect;
+        }
       });
     }else{
       console.log("Origin not defined!");
