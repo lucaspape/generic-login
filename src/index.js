@@ -23,6 +23,10 @@ database.connect((err) => {
       limit: '1mb'
     }));
 
+    app.get('/', (req, res) => {
+      res.redirect('frontend/login');
+    });
+
     app.post(API_PREFIX + '/login', (req, res) => {
       const username = req.body.username;
       const password = req.body.password;
