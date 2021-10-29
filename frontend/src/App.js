@@ -11,13 +11,13 @@ import {
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <div className="App">
         <Switch>
           <Route exact path="/" render={(props) => <Login {...props} /> } />
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 
