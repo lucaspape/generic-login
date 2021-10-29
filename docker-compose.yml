@@ -9,11 +9,21 @@ services:
     restart:                 always
     volumes:
      - ./mariadb:/var/lib/mysql
-  api:
-    build:                   src/
+
+  backend:
+    build:                   backend/
     restart:                 always
     command:                 npm start
-    ports:
-      - "8002:80"
     volumes:
      - ./config.json:/app/config.json
+
+  frontend:
+    build:                   frontend/
+    restart:                 always
+    command:                 serve -s build
+
+  proxy:
+    build:                   proxy/
+    restart:                 always
+    ports:
+      - "8002:80"

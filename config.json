@@ -1,1 +1,19 @@
-{}
+{
+  "required_fields": [
+      {
+        "name": "email",
+        "display_name": "Email",
+        "type": "text"
+      },
+      {
+        "name" : "firstName",
+        "display_name": "First Name",
+        "type": "text"
+      },
+      {
+        "name": "lastName",
+        "display_name": "Last Name",
+        "type": "text"
+      }
+  ]
+}
