@@ -36,7 +36,7 @@ database.connect((err) => {
           console.log(err);
           res.status(500).send("Internal server error");
         }else{
-          res.cookie('session', result.sessionId, { maxAge: 900000, httpOnly: true, sameSite: 'strict' }).send({ redirect: req.query.origin + '?sessionId=' + result.sessionId });
+          res.cookie('session', result.sessionId, { maxAge: 900000, httpOnly: true, sameSite: 'strict' }).send({ redirect: req.query.origin + '&sessionId=' + result.sessionId });
         }
       });
     });
