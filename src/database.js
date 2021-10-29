@@ -138,7 +138,7 @@ module.exports = {
   },
 
   login: function(username, password, callback){
-    const GET_USER_QUERY = 'select id, username, password from `' + DBNAME + '`.`users` where username = ' mysqlConnection.escape(username);
+    const GET_USER_QUERY = 'select id, username, password from `' + DBNAME + '`.`users` where username = ' + mysqlConnection.escape(username);
 
     mysqlConnection.query(GET_USER_QUERY, (err, result) => {
       if(err){
