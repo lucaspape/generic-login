@@ -9,8 +9,9 @@ services:
     restart:                 always
     volumes:
      - ./mariadb:/var/lib/mysql
-  api:
-    build:                   src/
+
+  backend:
+    build:                   backend/
     restart:                 always
     command:                 npm start
     volumes:
