@@ -1,3 +1,4 @@
+import './Login.css';
 import React from 'react'
 
 const axios = require('axios');
@@ -43,19 +44,19 @@ class Login extends React.Component {
   render(){
     return(
       <div>
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Username:
-          <input type="text" value={this.state.username} onChange={this.handleUsernameInputChange}/>
-        </label>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Username:
+            <input type="text" value={this.state.username} onChange={this.handleUsernameInputChange}/>
+          </label>
 
-        <label>
-          Password:
-          <input type="password" value={this.state.password} onChange={this.handlePasswordInputChange}/>
-        </label>
+          <label>
+            Password:
+            <input type="password" value={this.state.password} onChange={this.handlePasswordInputChange}/>
+          </label>
 
-        <input type="submit" value="Login"/>
-      </form>
+          <input type="submit" value="Login"/>
+        </form>
       </div>
     );
   }

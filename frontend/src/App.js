@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 
-import Login from './Login.js';
-import Register from './Register.js';
+import Login from './components/login/Login.js';
+import Register from './components/register/Register.js';
 
 import {
   BrowserRouter as Router,
