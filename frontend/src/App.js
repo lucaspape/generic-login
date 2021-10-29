@@ -7,15 +7,18 @@ import Register from './Register.js';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Route exact path="/frontend/login" component={Login}/>
-        <Route exact path="/frontend/register" component={Register}/>
+        <Route exact path="/login" component={Login}/>
+        <Route exact path="/register" component={Register}/>
+
+        <Redirect to="/login"/>
       </Router>
     </div>
   );
