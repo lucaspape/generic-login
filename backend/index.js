@@ -83,6 +83,10 @@ database.connect((err) => {
       }
     });
 
+    app.get(API_PREFIX + '/fields', (req, res) => {
+      res.send(database.getRequiredFields());
+    });
+
     app.listen(PORT, () => {
       console.log('Server started on port ' + PORT);
     });

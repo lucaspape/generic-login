@@ -10,16 +10,13 @@ const mysqlConnection = mysql.createConnection({
     database: DBNAME
   });
 
-const REQUIRED_FIELDS = ["email", "firstName", "lastName"];
-const REQUIRED_FIELDS_TYPES = ["TEXT", "TEXT", "TEXT"];
+const CONFIG = require('./config.json');
 
 function createTables(callback){
   let create_user_table_query = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT, password TEXT';
 
-  REQUIRED_FIELDS.forEach((field, i) => {
-    const type = REQUIRED_FIELDS_TYPES[i];
-
-    create_user_table_query += ', ' + field + ' ' + type;
+  CONFIG['required_fields'].forEach((field) => {
+    create_user_table_query += ', ' + field.name + ' ' + field.type;
   });
 
   create_user_table_query += ');';
@@ -62,8 +59,8 @@ function getUser(userId, withPassword, callback){
     get_user_query += ', password';
   }
 
-  REQUIRED_FIELDS.forEach((field, i) => {
-    get_user_query += ', ' + field;
+  CONFIG['required_fields'].forEach((field) => {
+    get_user_query += ', ' + field.name;
   });
 
   get_user_query += ' from `' + DBNAME + '`.`users` where id = ' + mysqlConnection.escape(userId) + ';';
@@ -83,9 +80,9 @@ function checkUserObject(user){
   }else if(!user.password){
     return "No password";
   }else{
-    REQUIRED_FIELDS.forEach((field, i) => {
-      if(!user[field]){
-        return "No " + field;
+    CONFIG['required_fields'].forEach((field) => {
+      if(!user[field.name]){
+        return "No " + field.name;
       }
     });
   }
@@ -102,6 +99,25 @@ module.exports = {
     });
   },
 
+  getRequiredFields: function(){
+    let returnArray = [
+      {
+        name: 'username',
+        display_name: 'Username',
+        type: 'TEXT'
+      },
+      {
+        name: 'password',
+        display_name: 'Password',
+        type: 'PASSWORD'
+      }
+    ];
+
+    returnArray.push(...CONFIG['required_fields']);
+
+    return(returnArray);
+  },
+
   register: function(user, callback){
     const userId = uuidv4().replaceAll('-', '');
 
@@ -110,14 +126,14 @@ module.exports = {
     if(!error){
       let insert_user_query = 'insert into `' + DBNAME + '`.`users` (id, username, password';
 
-      REQUIRED_FIELDS.forEach((field, i) => {
-        insert_user_query += ', ' + field;
+      CONFIG['required_fields'].forEach((field) => {
+        insert_user_query += ', ' + field.name;
       });
 
       insert_user_query += ') values (' + mysqlConnection.escape(userId) + ', ' + mysqlConnection.escape(user.username) + ', ' + mysqlConnection.escape(user.password)
 
-      REQUIRED_FIELDS.forEach((field, i) => {
-        insert_user_query += ', ' + mysqlConnection.escape(user[field]);
+      CONFIG['required_fields'].forEach((field) => {
+        insert_user_query += ', ' + mysqlConnection.escape(user[field.name]);
       });
 
       insert_user_query += ');';
