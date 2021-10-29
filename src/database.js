@@ -188,7 +188,7 @@ module.exports = {
         callback(err);
       }else{
         if(result){
-          getUser(result.userId, (err, result) => {
+          getUser(result.userId, false, (err, result) => {
             if(err){
               callback(err);
             }else{
