@@ -64,7 +64,7 @@ class Login extends React.Component {
           </div>
 
           <div>
-            <span className='crate'>No account? Register <a href='/register'>here</a></span>
+            <span className='create'>No account? Register <a href='/register'>here</a></span>
           </div>
         </form>
       </div>
