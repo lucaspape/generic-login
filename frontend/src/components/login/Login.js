@@ -16,6 +16,7 @@ class Login extends React.Component {
     this.loaded = false;
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onTextFieldChange = this.onTextFieldChange.bind(this);
   }
 
   handleSubmit(event){
