@@ -28,11 +28,17 @@ function createTables(callback){
 
   const CREATE_SESSION_TABLE = 'create table if not exists sessions (id varchar(64) NOT NULL PRIMARY KEY, userId varchar(64) NOT NULL);';
 
-  mysqlConnection.query(create_user_table_query + ' ' + CREATE_SESSION_TABLE, (err, result) => {
+  mysqlConnection.query(create_user_table_query, (err, result) => {
     if(err){
       callback(err);
     }else{
-      callback();
+      mysqlConnection.query(CREATE_SESSION_TABLE, (err, result) => {
+        if(err){
+          callback(err);
+        }else{
+          callback();
+        }
+      });
     }
   });
 }
