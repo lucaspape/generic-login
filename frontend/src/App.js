@@ -10,9 +10,6 @@ import {
 } from 'react-router-dom';
 
 function App() {
-  console.log(this.props.match.params.origin)
-  console.log(JSON.stringify(this.props.match));
-
   return (
     <Router>
       <div className="App">
