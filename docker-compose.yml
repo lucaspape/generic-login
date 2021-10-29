@@ -17,3 +17,10 @@ services:
       - "8002:80"
     volumes:
      - ./config.json:/app/config.json
+
+  frontend:
+    build:                   frontend/
+    restart:                 always
+    command:                 npm start
+    ports:
+      - "8003:80"
