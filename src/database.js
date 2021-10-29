@@ -10,10 +10,25 @@ const mysqlConnection = mysql.createConnection({
     database: DBNAME
   });
 
-function createTables(callback){
-  const CREATE_USER_TABLE = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT, personId TEXT, email TEXT, firstName TEXT, lastName TEXT);';
+const REQUIRED_FIELDS = [];
+const REQUIRED_FIELDS_TYPES = [];
 
-  mysqlConnection.query(CREATE_USER_TABLE, (err, result) => {
+function createTables(callback){
+  let create_user_table_query = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT, password TEXT';
+
+  REQUIRED_FIELDS.forEach((field, i) => {
+    const type = REQUIRED_FIELDS_TYPES[i];
+
+    create_user_table_query += ', ' + field + ' ' + type;
+  });
+
+  create_user_table_query += ');';
+
+  console.log('Creating table: ' + create_user_table_query);
+
+  const CREATE_SESSION_TABLE = 'create table if not exists sessions (id varchar(64) NOT NULL PRIMARY KEY, userId varchar(64) NOT NULL);';
+
+  mysqlConnection.query(create_user_table_query + ' ' + CREATE_SESSION_TABLE, (err, result) => {
     if(err){
       callback(err);
     }else{
