@@ -30,7 +30,7 @@ class Login extends React.Component {
   }
 
   onTextFieldChange(name, value){
-    let values = this.values;
+    let values = this.state.values;
     values[name] = value;
 
     this.setState({ values: values });
