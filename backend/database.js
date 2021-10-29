@@ -13,7 +13,7 @@ const mysqlConnection = mysql.createConnection({
 const CONFIG = require('./config.json');
 
 function createTables(callback){
-  let create_user_table_query = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT, password TEXT';
+  let create_user_table_query = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT UNIQUE, password TEXT';
 
   CONFIG.required_fields.forEach((field) => {
     create_user_table_query += ', ' + field.name + ' ' + field.type;
