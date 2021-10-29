@@ -1,5 +1,4 @@
 import React from 'react'
-import { withRouter } from 'react-router';
 
 const axios = require('axios');
 
@@ -28,16 +27,14 @@ class Login extends React.Component {
   handleSubmit(event){
     event.preventDefault();
 
-    console.log(JSON.stringify(this.props));
+    const origin = new URLSearchParams(props.location.search).get('origin');
 
-    if(this.props.match.params.origin){
+    if(origin){
       axios.post('api/login?origin=' + this.props.match.params.origin, { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
         console.log(response.data);
       });
     }else{
       console.log("Origin not defined!");
-
-      console.log(this.props);
     }
   }
 
@@ -62,4 +59,4 @@ class Login extends React.Component {
   }
 }
 
-export default withRouter(Login);
+export default Login;
