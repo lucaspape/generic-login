@@ -22,7 +22,7 @@ class Login extends React.Component {
   handleSubmit(event){
     event.preventDefault();
 
-    axios.post('api/register', { username: this.state.username, password: this.state.password, email: this.state.email, firstName: this.state.firstName, lastName: this.state.lastName }, { validateStatus: false }).then(response => {
+    axios.post('api/register', values, { validateStatus: false }).then(response => {
       if(response.data.redirect){
         window.location.href = '/';
       }
