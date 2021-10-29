@@ -11,13 +11,11 @@ import {
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Switch>
-          <Route exact path="/" render={(props) => <Login {...props} /> } />
-        </Switch>
-      </div>
-    </Router>
+    <div className="App">
+      <Router>
+        <Route exact path="/" component={Login}/>
+      </Router>
+    </div>
   );
 }
 
