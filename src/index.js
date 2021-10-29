@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const database = require('./database.js');
 
+const API_PREFIX = '/api';
 const PORT = 80;
 
 database.connect((err) => {
@@ -22,18 +23,7 @@ database.connect((err) => {
       limit: '1mb'
     }));
 
-    app.get('/', (req, res) => {
-      database.login(json, (err, result) => {
-        if(err){
-          console.log(err);
-          res.status(500).send("Internal server error");
-        }else{
-          res.cookie('session', result.sessionId, { maxAge: 900000, httpOnly: true, sameSite: 'strict' }).redirect(req.query.origin  + '&sessionId=' + result.sessionId);
-        }
-      });
-    });
-
-    app.post('/login', (req, res) => {
+    app.post(API_PREFIX + '/login', (req, res) => {
       const username = req.body.username;
       const password = req.body.password;
 
@@ -47,7 +37,7 @@ database.connect((err) => {
       });
     });
 
-    app.post('/register', (req, res) => {
+    app.post(API_PREFIX + '/register', (req, res) => {
       const user = req.body;
 
       database.register(user, (err) => {
@@ -60,7 +50,7 @@ database.connect((err) => {
       });
     });
 
-    app.get('/user/:sessionId', (req, res) => {
+    app.get(API_PREFIX + '/user/:sessionId', (req, res) => {
       const sessionId = req.params.sessionId;
 
       if(sessionId){

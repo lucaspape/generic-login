@@ -13,8 +13,6 @@ services:
     build:                   src/
     restart:                 always
     command:                 npm start
-    ports:
-      - "8002:80"
     volumes:
      - ./config.json:/app/config.json
 
@@ -22,5 +20,9 @@ services:
     build:                   frontend/
     restart:                 always
     command:                 serve -s build
+
+  proxy:
+    build:                   proxy/
+    restart:                 always
     ports:
-      - "8003:80"
+      - "8002:80"
