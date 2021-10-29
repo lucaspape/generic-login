@@ -10,8 +10,8 @@ const mysqlConnection = mysql.createConnection({
     database: DBNAME
   });
 
-const REQUIRED_FIELDS = ["personId", "email", "firstName", "lastName"];
-const REQUIRED_FIELDS_TYPES = ["INT AUTO_INCREMENT KEY", "TEXT", "TEXT", "TEXT"];
+const REQUIRED_FIELDS = ["email", "firstName", "lastName"];
+const REQUIRED_FIELDS_TYPES = ["TEXT", "TEXT", "TEXT"];
 
 function createTables(callback){
   let create_user_table_query = 'create table if not exists users (id varchar(64) NOT NULL PRIMARY KEY, username TEXT, password TEXT';
