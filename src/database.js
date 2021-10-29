@@ -77,7 +77,7 @@ function getUser(userId, withPassword, callback){
   });
 }
 
-checkUserObject(user){
+function checkUserObject(user){
   if(!user.username){
     return "No username";
   }else if(!user.password){
