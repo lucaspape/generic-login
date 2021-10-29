@@ -12,7 +12,7 @@ class TextInput extends React.Component {
 
   state = {
     value: '',
-    confirmValue: '',
+    confirm_value: '',
     confirm_valid: true,
     confirm_message: '',
     valid: false,
@@ -26,13 +26,19 @@ class TextInput extends React.Component {
       valid = true;
     }
 
-    this.setState({ value: event.target.value, confirm_valid: event.target.value === this.state.value, valid: valid });
+    let confirm_valid = true;
+
+    if(this.props.confirm){
+      confirm_valid = event.target.value === this.state.confirm_value;
+    }
+
+    this.setState({ value: event.target.value, confirm_valid: confirm_valid, valid: valid });
 
     this.props.onChange(this.props.name, event.target.value);
   }
 
   onConfirmInputChange(event){
-    this.setState({ confirmValue: event.target.value, confirm_valid: event.target.value === this.state.value });
+    this.setState({ confirm_value: event.target.value, confirm_valid: event.target.value === this.state.value });
   }
 
   validate(){
@@ -72,7 +78,7 @@ class TextInput extends React.Component {
             <input type={this.props.type} value={this.state.value} onChange={this.onInputChange}/>
 
             <span className='label'>Confirm {this.props.display_name}:</span>
-            <input type={this.props.type} value={this.state.confirmValue} onChange={this.onConfirmInputChange}/>
+            <input type={this.props.type} value={this.state.confirm_value} onChange={this.onConfirmInputChange}/>
             <span className='error'>{this.state.valid_message}</span>
             <span className='error'>{this.state.confirm_message}</span>
           </label>
