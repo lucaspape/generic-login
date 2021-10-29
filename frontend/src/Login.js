@@ -27,10 +27,10 @@ class Login extends React.Component {
   handleSubmit(event){
     event.preventDefault();
 
-    const origin = new URLSearchParams(props.location.search).get('origin');
+    const origin = new URLSearchParams(this.props.location.search).get('origin');
 
     if(origin){
-      axios.post('api/login?origin=' + this.props.match.params.origin, { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
+      axios.post('api/login?origin=' + origin, { username: this.state.username, password: this.state.password }, { validateStatus: false }).then(response => {
         console.log(response.data);
       });
     }else{
