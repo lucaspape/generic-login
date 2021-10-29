@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import Login from './Login.js';
+import Register from './Register.js';
 
 import {
   BrowserRouter as Router,
@@ -14,6 +15,7 @@ function App() {
     <div className="App">
       <Router>
         <Route exact path="/" component={Login}/>
+        <Route exact path="/register" component={Register}/>
       </Router>
     </div>
   );
