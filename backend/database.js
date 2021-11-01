@@ -211,6 +211,7 @@ module.exports = {
               callback(err);
             }else{
               if(result){
+                result.avatarUrl = 'https://cdn.discordapp.com/attachments/777876749836615712/902999369069002782/thonk.png';
                 callback(undefined, result);
               }else{
                 callback(401);
